@@ -1,40 +1,58 @@
-game();
+const selections = document.querySelectorAll(".selection");
+selections.forEach(selection => selection.addEventListener("click", game));
+
+/**
+ * @type {HTMLElement}
+ */
+const display = document.querySelector(".display");
+
+let playerScore = 0;
+let computerScore = 0;
+
+function displayMsg(msg) {
+    const p = document.createElement("p");
+    p.textContent = msg;
+    display.appendChild(p);
+}
 
 function game() {
-    let playerScore = 0;
-    let computerScore = 0;
 
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Rock, Paper or Scissors?");
-        const computerSelection = getComputerChoice();
-        const playerSelectionTitleCase = toTitleCase(playerSelection);
-        const computerSelectionTitleCase = toTitleCase(computerSelection);
-        const result = playRound(playerSelection, computerSelection);
+    const playerSelection = this.textContent;
+    const computerSelection = getComputerChoice();
+    const playerSelectionTitleCase = toTitleCase(playerSelection);
+    const computerSelectionTitleCase = toTitleCase(computerSelection);
+    const result = playRound(playerSelection, computerSelection);
 
-        switch (result) {
-            case -1:
-                console.log(`You Lose! ${computerSelectionTitleCase} beats ${playerSelectionTitleCase}`);
-                computerScore++;
-                break;
-            case 0:
-                console.log(`It's a Tie! ${playerSelectionTitleCase} vs. ${computerSelectionTitleCase}`);
-                break;
-            case 1:
-                console.log(`You Win! ${playerSelectionTitleCase} beats ${computerSelectionTitleCase}`);
-                playerScore++;
-                break;
-            default:
-                console.log("Something went wrong");
-                break;
-        }
+    switch (result) {
+        case -1:
+            const msgLose = `You Lose! ${computerSelectionTitleCase} beats ${playerSelectionTitleCase}`;
+            displayMsg(msgLose);
+            computerScore++;
+            break;
+        case 0:
+            const msgTie = `It's a Tie! ${playerSelectionTitleCase} vs. ${computerSelectionTitleCase}`;
+            displayMsg(msgTie);
+            break;
+        case 1:
+            const msgWin = `You Win! ${playerSelectionTitleCase} beats ${computerSelectionTitleCase}`;
+            displayMsg(msgWin);
+            playerScore++;
+            break;
+        default:
+            const msgError = "Something went wrong";
+            displayMsg(msgError);
+            break;
     }
 
-    if (playerScore > computerScore) {
-        console.log("You are the winner at the end!");
-    } else if (computerScore > playerScore) {
-        console.log("Computer is the winner at the end!");
-    } else {
-        console.log("No winner! It's a Tie");
+    document.querySelector(".player-score span").textContent = playerScore;
+    document.querySelector(".computer-score span").textContent = computerScore;
+
+    if (playerScore === 5) {
+        const msg = "You are the winner at the end!";
+        displayMsg(msg);
+    } else if (computerScore === 5) {
+        const msg = "Computer is the winner at the end!";
+        displayMsg(msg);
     }
 }
 
